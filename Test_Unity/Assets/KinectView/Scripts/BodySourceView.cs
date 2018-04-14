@@ -16,17 +16,21 @@ public class BodySourceView : MonoBehaviour
     public Material BoneMaterial;
     public Material BoneMaterial2;
 
+    //still need this to store trackingIds
     private Dictionary<ulong, GameObject> mBodies = new Dictionary<ulong, GameObject>();
 
     private Vector3 leftHandPos = new Vector3();
     private Vector3 rightHandPos = new Vector3();
+
     private bool sitTest = false;
+    private bool skelTest = false;
+    private bool handPosTest = false;
 
     //list of joints that prefab gets connected to
     private List<Kinect.JointType> _joints = new List<Kinect.JointType> {
         Kinect.JointType.HandLeft,
         Kinect.JointType.HandRight,
-        Kinect.JointType.Head,
+
         //Kinect.JointType.Head, -> can add this in to track head also!
     };
 
@@ -40,15 +44,8 @@ public class BodySourceView : MonoBehaviour
     };
 
 
-    private Vector3 testHip = new Vector3(-0.8f, -2.6f, 0);
-    private Vector3 testKnee = new Vector3(-3.5f, -4.4f, 0);
-
-    
-
-
     void Update () 
     {
-        FindHipAngle(testHip, testKnee);
         Kinect.Body[] data = mBodySourceManager.GetData();
 
         //check to see if kenect is returning data
@@ -86,6 +83,9 @@ public class BodySourceView : MonoBehaviour
                 Destroy(mBodies[trackingId]);
 
                 mBodies.Remove(trackingId);
+
+                //reset bool tests
+                resetTest();
             }
         }
 
@@ -100,19 +100,29 @@ public class BodySourceView : MonoBehaviour
 
             //counter is ghetto fix to only have one body at a time would need fixing
             if (body.IsTracked && counter < 1) {
-                
+
                 //if body doesnt exist, create it
                 if (!mBodies.ContainsKey(body.TrackingId)) {
                     mBodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
                 }
+
+                
 
                 //update position
                 UpdateBodyObject(body, mBodies[body.TrackingId]);
                 counter++;
             }
         }
-    
-        
+
+        float holdTime = 1.0f;
+        if (handPosTest) {
+            holdTime -= Time.deltaTime;
+
+            if (holdTime <= 0) {
+                //turn to hand sprite and remove dots
+                Debug.Log("HELD FOR 1 seconds");
+            }
+        }
     }
     
     private GameObject CreateBodyObject(ulong id)
@@ -129,28 +139,17 @@ public class BodySourceView : MonoBehaviour
             //deals with singular joint
             if (joint.ToString() != "Head")
             {
-                //create game object
+                //create game object for hands
                 GameObject newJoint = Instantiate(mJointObject);
                 newJoint.name = joint.ToString();
-                //mJointObject.GetComponent<SpriteRenderer>().sprite = normalSprite;
 
                 //parent body
                 newJoint.transform.parent = body.transform;
-            }
-            if (joint.ToString() == "Head")
-            {
-                //create game object
-                GameObject newJoint = Instantiate(mFaceObject);
-                newJoint.name = joint.ToString();
-                //mJointObject.GetComponent<SpriteRenderer>().sprite = normalSprite;
-
-                //parent body
-                newJoint.transform.parent = body.transform;
-                
-                
             }
 
         }
+
+        //GameObject.Find("HandRight").SetActive(false);
 
         //deals with bone
         for(Kinect.JointType jt = Kinect.JointType.HipLeft; jt <= Kinect.JointType.ThumbRight; jt++)
@@ -174,52 +173,68 @@ public class BodySourceView : MonoBehaviour
     
     private void UpdateBodyObject(Kinect.Body body, GameObject bodyObject)
     {
-
-        for (Kinect.JointType jt = Kinect.JointType.HipLeft; jt <= Kinect.JointType.ThumbRight; jt++)
-        {
-
-            Kinect.Joint sourceJoint = body.Joints[jt];
-            Kinect.Joint? targetJoint = null;
-            
-            //IF JOINT IS IN BONEMAP ADD IT TO TARGET JOINT 
-            if (_BoneMap.ContainsKey(jt))
+        if (!sitTest) {
+            for (Kinect.JointType jt = Kinect.JointType.HipLeft; jt <= Kinect.JointType.ThumbRight; jt++)
             {
-                targetJoint = body.Joints[_BoneMap[jt]];
-                Debug.Log(sourceJoint.ToString());
-            }
 
-            Transform jointObj = bodyObject.transform.Find(jt.ToString());
-            jointObj.localPosition = GetVector3FromJoint(sourceJoint);
+                Kinect.Joint sourceJoint = body.Joints[jt];
+                Kinect.Joint? targetJoint = null;
 
-            LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-            if (targetJoint.HasValue)
-            {
-                lr.SetPosition(0, jointObj.localPosition);
-                lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
-                lr.startColor = Color.white; //(Color.grey,Color.grey);
-                lr.endColor = Color.grey;
+                //IF JOINT IS IN BONEMAP ADD IT TO TARGET JOINT 
+                if (_BoneMap.ContainsKey(jt))
+                {
+                    targetJoint = body.Joints[_BoneMap[jt]];
+                }
 
-                float legAngle = FindHipAngle(GetVector3FromJoint(sourceJoint), GetVector3FromJoint(targetJoint.Value));
-                //Debug.Log(legAngle);
+                Transform jointObj = bodyObject.transform.Find(jt.ToString());
+                jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 
-                //-5 <= x <= 5 -> tollerence TOTEST
-                if (legAngle >= -5 && legAngle <= 5) {
-                    Debug.Log("sitting");
-                    sitTest = true;
-                    LineRenderer lr2 = GameObject.Find("KneeLeft").GetComponent<LineRenderer>();
-                    lr2.material = BoneMaterial2;
+                LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+                if (targetJoint.HasValue)
+                {
+                    lr.SetPosition(0, jointObj.localPosition);
+                    lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
+                    lr.startColor = Color.white; //(Color.grey,Color.grey);
+                    lr.endColor = Color.grey;
 
-                    //ghetto solution -> couldnt get the face to be not visible at start --> set face after sit
-                    GameObject.Find("Head").GetComponentInChildren<SpriteRenderer>().sprite = sadFace;
+                    float legAngle = FindHipAngle(GetVector3FromJoint(sourceJoint), GetVector3FromJoint(targetJoint.Value));
+                    //Debug.Log(legAngle);
+
+                    //-5 <= x <= 5 -> tollerence TOTEST
+                    if (legAngle >= -5 && legAngle <= 5)
+                    {
+                        Debug.Log("sitting");
+                        sitTest = true;
+                        
+
+                        //ghetto solution -> couldnt get the face to be not visible at start --> set face after sit
+
+                    }
+                }
+                else
+                {
+                    lr.enabled = false;
                 }
             }
-            else
-            {
-                lr.enabled = false;
-            }
         }
+        
         if (sitTest) {
-            //for face and hands (single joints)
+            
+            if (!skelTest) {
+                //iterate over all the joints that arent hands and remover them
+                for (Kinect.JointType jt = Kinect.JointType.HipLeft; jt <= Kinect.JointType.ThumbRight; jt++)
+                {
+                    if (jt != Kinect.JointType.HandRight || jt != Kinect.JointType.HandLeft)
+                    {
+                        GameObject.Find(jt.ToString()).SetActive(false);
+                    }
+
+                }
+                skelTest = true;
+            }
+            
+
+                //for face and hands (single joints)
             foreach (Kinect.JointType _joint in _joints)
             {
 
@@ -241,40 +256,21 @@ public class BodySourceView : MonoBehaviour
                     if (_joint.ToString() == "HandLeft")
                     {
                         leftHandPos = GetVector3FromJoint(selectedJoint);
-                        Debug.Log(leftHandPos);
                     }
                     else
                     {
                         rightHandPos = GetVector3FromJoint(selectedJoint);
-                        Debug.Log(rightHandPos);
+                        
                     }
                 }
 
+                //0.5 is radius
+                if (leftHandPos.x <= -4.5 && leftHandPos.x >= -5.5) {
+                    //Debug.Log(rightHandPos.y);
+                }
 
             }
-            if (Vector3.Distance(leftHandPos, rightHandPos) < 1)
-            {
-                //Debug.Log("-----------------");
-                //Debug.Log(body);
-
-                //Debug.Log(GameObject.Find("HandLeft"));
-                //Debug.Log(GameObject.Find("HandRight"));
-
-                GameObject.Find("HandLeft").GetComponent<SpriteRenderer>().sprite = peeze;
-                GameObject.Find("HandRight").GetComponent<SpriteRenderer>().sprite = peeze;
-                GameObject.Find("Head").GetComponentInChildren<SpriteRenderer>().sprite = happyFace;
-                // I BLOODY DID IT!!!
-
-
-                //turns off old hands
-                //bodyObject.SetActive(false);
-
-                //Sprite hands = bodyObject.GetComponentInChildren<SpriteRenderer>().sprite;
-
-                //Debug.Log(bodyObject.GetComponentInChildren<SpriteRenderer>().sprite);
-
-                //bodyObject.GetComponent<SpriteRenderer>().sprite = togetherSprite;
-            }
+           
         }
         
     }
@@ -297,5 +293,10 @@ public class BodySourceView : MonoBehaviour
 
     private static float RadToDegrees(float rad) {
         return rad * (180 / Mathf.PI);
+    }
+
+    private void resetTest() {
+        sitTest = false;
+        skelTest = false;
     }
 }

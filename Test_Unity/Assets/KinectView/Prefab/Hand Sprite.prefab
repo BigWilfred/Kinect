@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4488322548754472}
   - component: {fileID: 212747993035924088}
+  - component: {fileID: 135508172674963020}
+  - component: {fileID: 114775662770590206}
   m_Layer: 0
   m_Name: Hand Sprite
   m_TagString: Untagged
@@ -40,6 +42,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114775662770590206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1112508420030260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce1a511acea72d4ba18457eac0ef25a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &135508172674963020
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1112508420030260}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.28
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &212747993035924088
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -74,7 +99,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c0167b79f71a2004c90efc7778281d58, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 460b55edf30e2b344b89ab9b36dd9467, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

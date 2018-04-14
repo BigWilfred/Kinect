@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 436950380}
   - component: {fileID: 436950379}
   - component: {fileID: 436950378}
+  - component: {fileID: 436950382}
   m_Layer: 0
   m_Name: touch1
   m_TagString: Untagged
@@ -381,7 +382,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 047e1bbc4b19cc047877095f27352bd4, type: 2}
+  - {fileID: 2100000, guid: 920a1dfb58a5cd24ca6cf8bf5b45e94f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -408,7 +409,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 436950377}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -433,6 +434,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &436950382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 436950377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce1a511acea72d4ba18457eac0ef25a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &660022884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,7 +1151,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 047e1bbc4b19cc047877095f27352bd4, type: 2}
+  - {fileID: 2100000, guid: 920a1dfb58a5cd24ca6cf8bf5b45e94f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1166,7 +1178,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2003643879}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
