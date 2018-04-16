@@ -155,15 +155,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mBodySourceManager: {fileID: 1698423885}
-  mJointObject: {fileID: 1112508420030260, guid: 52be84b4cc240964195906bd6f9b09f4,
+  mJointLeft: {fileID: 1112508420030260, guid: 52be84b4cc240964195906bd6f9b09f4, type: 2}
+  mJointRight: {fileID: 1112508420030260, guid: 3b2050be6835bf4429b8fc4c125272dc,
     type: 2}
-  mFaceObject: {fileID: 1746107563550732, guid: 350a3ba3d363ccc40af1c09e3744288e,
-    type: 2}
-  peeze: {fileID: 21300000, guid: 1b7ff81010e7c164a8cbd6b74b007436, type: 3}
-  happyFace: {fileID: 21300000, guid: d9ddee15bf5ea0b4f8c84ac6343b13a3, type: 3}
-  sadFace: {fileID: 21300000, guid: 0463e6532c6e2854fb7045daf8cdbf97, type: 3}
   BoneMaterial: {fileID: 2100000, guid: f2ea145c63353784985576f08398a815, type: 2}
-  BoneMaterial2: {fileID: 2100000, guid: d52b0040aa634ca4ead354c34070aaf7, type: 2}
 --- !u!1 &252019523
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,6 +355,8 @@ GameObject:
   - component: {fileID: 436950380}
   - component: {fileID: 436950379}
   - component: {fileID: 436950378}
+  - component: {fileID: 436950383}
+  - component: {fileID: 436950384}
   - component: {fileID: 436950382}
   m_Layer: 0
   m_Name: touch1
@@ -440,9 +437,35 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 436950377}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce1a511acea72d4ba18457eac0ef25a, type: 3}
+  m_Script: {fileID: 11500000, guid: fec852e7c86bb2245bd7527768cfacfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &436950383
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 436950377}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &436950384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 436950377}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a08c4e8bba44d04d9a679cfa4fc390d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &660022884
@@ -1128,8 +1151,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2003643883}
   - component: {fileID: 2003643882}
-  - component: {fileID: 2003643881}
   - component: {fileID: 2003643880}
+  - component: {fileID: 2003643881}
+  - component: {fileID: 2003643885}
+  - component: {fileID: 2003643886}
+  - component: {fileID: 2003643884}
   m_Layer: 0
   m_Name: touch2
   m_TagString: Untagged
@@ -1203,3 +1229,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2003643884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2003643879}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bd4c89e8473d6a44a326650c954ee16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &2003643885
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2003643879}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2003643886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2003643879}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a08c4e8bba44d04d9a679cfa4fc390d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -20,10 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4488322548754472}
   - component: {fileID: 212747993035924088}
-  - component: {fileID: 135508172674963020}
-  - component: {fileID: 114775662770590206}
+  - component: {fileID: 135646794478255224}
   m_Layer: 0
-  m_Name: Hand Sprite
+  m_Name: Hand Sprite R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,18 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114775662770590206
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1112508420030260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce1a511acea72d4ba18457eac0ef25a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!135 &135508172674963020
+--- !u!135 &135646794478255224
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

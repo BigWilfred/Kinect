@@ -7,14 +7,10 @@ using Kinect = Windows.Kinect;
 public class BodySourceView : MonoBehaviour 
 {
     public BodySourceManager mBodySourceManager;
-    public GameObject mJointObject;
-    public GameObject mFaceObject;
-    public Sprite peeze;
-    public Sprite happyFace;
-    public Sprite sadFace;
+    public GameObject mJointLeft;
+    public GameObject mJointRight;
 
     public Material BoneMaterial;
-    public Material BoneMaterial2;
 
     //still need this to store trackingIds
     private Dictionary<ulong, GameObject> mBodies = new Dictionary<ulong, GameObject>();
@@ -24,7 +20,9 @@ public class BodySourceView : MonoBehaviour
 
     private bool sitTest = false;
     private bool skelTest = false;
-    private bool handPosTest = false;
+
+    //HELP! should this be saved or just use the first item in tracked.
+    private ulong trackedId1 = new ulong();
 
     //list of joints that prefab gets connected to
     private List<Kinect.JointType> _joints = new List<Kinect.JointType> {
@@ -54,6 +52,8 @@ public class BodySourceView : MonoBehaviour
 
         //all tracking ids that the kinect can see
         List<ulong> trackedIds = new List<ulong>();
+        
+
 
         foreach (var body in data) {
             
@@ -99,29 +99,21 @@ public class BodySourceView : MonoBehaviour
                 continue;
 
             //counter is ghetto fix to only have one body at a time would need fixing
-            if (body.IsTracked && counter < 1) {
-
+            //body.TrackingId == trackedIds[0] ie/ if the bodys tracking ID is the first body that was tracked, creater and update it
+            if (body.IsTracked && body.TrackingId == trackedIds[0]) {
                 //if body doesnt exist, create it
                 if (!mBodies.ContainsKey(body.TrackingId)) {
                     mBodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
                 }
 
-                
 
-                //update position
                 UpdateBodyObject(body, mBodies[body.TrackingId]);
+                //update position
+
                 counter++;
             }
-        }
-
-        float holdTime = 1.0f;
-        if (handPosTest) {
-            holdTime -= Time.deltaTime;
-
-            if (holdTime <= 0) {
-                //turn to hand sprite and remove dots
-                Debug.Log("HELD FOR 1 seconds");
-            }
+            
+            
         }
     }
     
@@ -133,20 +125,23 @@ public class BodySourceView : MonoBehaviour
         
         foreach (Kinect.JointType joint in _joints)
         {
-
-
-
-            //deals with singular joint
-            if (joint.ToString() != "Head")
-            {
-                //create game object for hands
-                GameObject newJoint = Instantiate(mJointObject);
+            //create game object for hands
+            if (joint.ToString() == "HandLeft") {
+                GameObject newJoint = Instantiate(mJointLeft);
                 newJoint.name = joint.ToString();
-
-                //parent body
                 newJoint.transform.parent = body.transform;
             }
 
+            if(joint.ToString() == "HandRight") {
+                GameObject newJoint = Instantiate(mJointRight);
+                newJoint.name = joint.ToString();
+                newJoint.transform.parent = body.transform;
+            }
+            //newJoint = Instantiate(mJointObject);
+            //newJoint.name = joint.ToString();
+
+            //parent body
+            //newJoint.transform.parent = body.transform;
         }
 
         //GameObject.Find("HandRight").SetActive(false);
@@ -261,6 +256,7 @@ public class BodySourceView : MonoBehaviour
                     {
                         rightHandPos = GetVector3FromJoint(selectedJoint);
                         
+                        
                     }
                 }
 
@@ -277,7 +273,7 @@ public class BodySourceView : MonoBehaviour
         
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
-        return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
+        return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, 0.0f);
     }
 
     private static float FindHipAngle(Vector3 hip, Vector3 knee) {

@@ -243,6 +243,9 @@
   <ItemGroup>
     <Compile Include="Assets\KinectView\Scripts\BodySourceManager.cs" />
     <Compile Include="Assets\KinectView\Scripts\BodySourceView.cs" />
+    <Compile Include="Assets\KinectView\Scripts\CollisionLeft.cs" />
+    <Compile Include="Assets\KinectView\Scripts\CollisionManager.cs" />
+    <Compile Include="Assets\KinectView\Scripts\CollisionRight.cs" />
     <Compile Include="Assets\KinectView\Scripts\ColorSourceManager.cs" />
     <Compile Include="Assets\KinectView\Scripts\ColorSourceView.cs" />
     <Compile Include="Assets\KinectView\Scripts\DepthSourceManager.cs" />
