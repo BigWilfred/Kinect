@@ -51,7 +51,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\DragAndDrop.cs" />
      <Compile Include="Assets\Script\handController.cs" />
+     <Compile Include="Assets\Script\LeftHandController.cs" />
+     <Compile Include="Assets\Script\RightHandController.cs" />
      <Compile Include="Assets\Script\userReact.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
