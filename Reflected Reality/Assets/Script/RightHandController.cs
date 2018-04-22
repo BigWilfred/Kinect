@@ -25,7 +25,10 @@ public class RightHandController : MonoBehaviour {
 				drop.DropItem();
 			}
 		}
+
 	}
+
+
 
 	private bool HasInput
 	{
